@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/productdb
+    username: root
+    password: root
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8081
+
+logging:
+  level:
+    org.hibernate.tool.schema: DEBUG
+    org.hibernate.SQL: DEBUG
+
+
