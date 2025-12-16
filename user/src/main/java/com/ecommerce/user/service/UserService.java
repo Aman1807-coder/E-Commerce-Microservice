@@ -8,11 +8,13 @@ import com.ecommerce.user.model.User;
 import com.ecommerce.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
@@ -68,15 +70,16 @@ public class UserService {
     public void addUser(UserRequest userRequest) {
         User user = new User();
         mapRequestToUser(user, userRequest);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        System.out.println(savedUser);
     }
 
-    public Optional<UserResponse> fetchUser(Long id) {
+    public Optional<UserResponse> fetchUser(String id) {
         return userRepository.findById(id)
                 .map(this::mapUserToResponse);
     }
 
-    public boolean updateUser(Long id, UserRequest updatedUser) {
+    public boolean updateUser(String id, UserRequest updatedUser) {
         return userRepository.findById(id)
                 .map(existingUser -> {
                     mapRequestToUser(existingUser, updatedUser);
