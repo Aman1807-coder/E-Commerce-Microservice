@@ -1,24 +1,5 @@
 spring:
   application:
     name: product-service
-  datasource:
-    url: jdbc:postgresql://localhost:5432/productdb
-#    url: jdbc:postgresql://ep-still-tooth-a1qfeteu-pooler.ap-southeast-1.aws.neon.tech/product?sslmode=require&channel_binding=require
-    username: root
-    password: root
-  jpa:
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-server:
-  port: 8081
-
-logging:
-  level:
-    org.hibernate.tool.schema: DEBUG
-    org.hibernate.SQL: DEBUG
-
-
+  config:
+    import: optional:configserver:http://localhost:8888
