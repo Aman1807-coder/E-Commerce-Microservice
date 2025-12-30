@@ -1,6 +1,10 @@
 package com.example.order.service;
 
+import com.example.order.client.ProductServiceClient;
+import com.example.order.client.UserServiceClient;
 import com.example.order.dto.CartItemRequest;
+import com.example.order.dto.ProductResponse;
+import com.example.order.dto.UserResponse;
 import com.example.order.model.CartItem;
 import com.example.order.respository.CartItemRepository;
 import jakarta.transaction.Transactional;
@@ -14,11 +18,11 @@ import java.util.List;
 @Transactional
 public class CartItemService {
 
-//    @Autowired
-//    ProductRepository productRepository;
+    @Autowired
+    ProductServiceClient productServiceClient;
 
-//    @Autowired
-//    UserRepository userRepository;
+    @Autowired
+    UserServiceClient userServiceClient;
 
     @Autowired
     CartItemRepository cartItemRepository;
@@ -29,16 +33,12 @@ public class CartItemService {
 
     public boolean addToCart(String userId, CartItemRequest cartItemRequest) {
 
-//        Optional<Product> productOpt =  productRepository.findById(cartItemRequest.getProductId());
-//
-//        if (productOpt.isEmpty()) return false;
-//        Product product = productOpt.get();
-//        if (product.getStockQuantity() < cartItemRequest.getQuantity()) return false;
-//
-//        Optional<User> userOpt =  userRepository.findById(Long.valueOf(userId));
-//
-//        if (userOpt.isEmpty()) return false;
-//        User user = userOpt.get();
+        ProductResponse productResponse = productServiceClient.getProductDetails(cartItemRequest.getProductId());
+        if (productResponse == null || productResponse.getStockQuantity() < cartItemRequest.getQuantity()) return false;
+
+        UserResponse userResponse = userServiceClient.getUserDetails(userId);
+
+        if (userResponse == null) return false;
 
         CartItem existingCartItem = cartItemRepository.findByUserIdAndProductId(userId, cartItemRequest.getProductId());
 

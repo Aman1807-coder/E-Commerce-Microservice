@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -27,6 +28,7 @@ public class ProductService {
 
     private ProductResponse mapProductToResponse(Product product) {
         ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
         productResponse.setName(product.getName());
         productResponse.setDescription(product.getDescription());
         productResponse.setPrice(product.getPrice());
@@ -70,9 +72,14 @@ public class ProductService {
     }
 
     public List<ProductResponse> searchProducts(String keyword) {
-        System.out.println(keyword);
         return productRepository.searchproduct(keyword).stream()
                 .map(this::mapProductToResponse)
                 .toList();
+    }
+
+
+    public Optional<ProductResponse> fetchProductById(String id) {
+        return productRepository.findByIdAndActiveTrue(Long.valueOf(id))
+                .map(this::mapProductToResponse);
     }
 }

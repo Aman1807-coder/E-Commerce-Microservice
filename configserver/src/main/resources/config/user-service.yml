@@ -21,3 +21,11 @@ logging:
   level:
     org.springframework.data.mongodb: DEBUG
     org.mongodb.driver: DEBUG
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
