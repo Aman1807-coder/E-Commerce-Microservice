@@ -20,14 +20,12 @@ management:
     web:
       exposure:
         include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
 
 server:
-  port: 8087
-
-logging:
-  level:
-    org.hibernate.tool.schema: DEBUG
-    org.hibernate.SQL: DEBUG
+  port: 8081
 
 eureka:
   client:
@@ -35,3 +33,14 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     register-with-eureka: true
     fetch-registry: true
+
+logging:
+  level:
+    root: INFO
+    com.ecommerce.user: TRACE
+  file:
+    name: logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 5MB
+      max-history: 7
