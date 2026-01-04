@@ -32,7 +32,6 @@ public class OrderService {
             return Optional.empty();
         }
 
-
         BigDecimal totalPrice = cartItems.stream()
                 .map(CartItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
