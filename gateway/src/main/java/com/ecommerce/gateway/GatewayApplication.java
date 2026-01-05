@@ -16,16 +16,25 @@ public class GatewayApplication {
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("product-service", r ->
-                         r.path("/api/products/**")
+                .route("product-service", r -> r
+                        .path("/api/products/**")
+                        .filters(f -> f.circuitBreaker(config -> config
+                                .setName("ecombreaker")
+                                .setFallbackUri("forward:/fallback/product")))
                         .uri("lb://PRODUCT-SERVICE"))
 
-                .route("user-service", r ->
-                         r.path("/api/users/**")
+                .route("user-service", r -> r
+                        .path("/api/users/**")
+                        .filters(f -> f.circuitBreaker(config -> config
+                                .setName("ecombreaker")
+                                .setFallbackUri("forward:/fallback/user")))
                         .uri("lb://USER-SERVICE"))
 
-                .route("order-service", r ->
-                         r.path("/api/orders/**", "/api/cart/**")
+                .route("order-service", r -> r
+                        .path("/api/orders/**", "/api/cart/**")
+                        .filters(f -> f.circuitBreaker(config -> config
+                                .setName("ecombreaker")
+                                .setFallbackUri("forward:/fallback/order")))
                         .uri("lb://ORDER-SERVICE"))
 
                 .route("eureka-server", r ->

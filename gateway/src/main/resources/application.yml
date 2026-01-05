@@ -1,6 +1,8 @@
 spring:
   application:
-    name: gateway
+    name: gateway-servicex
+  config:
+    import: optional:configserver:http://localhost:8888
 #  cloud:
 #    gateway:
 #      routes:
@@ -17,18 +19,4 @@ spring:
 #          predicates:
 #            - Path=/api/orders/**,/api/cart/**
 
-server:
-  port: 8080
-
-management:
-  endpoint:
-    gateway:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  tracing:
-    sampling:
-      probability: 1.0
 

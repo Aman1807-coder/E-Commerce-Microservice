@@ -24,7 +24,8 @@ management:
     health:
       show-details: always
   health:
-    circuitbreakers: true
+    circuitbreakers:
+      enabled: true
   tracing:
     sampling:
       probability: 1.0
@@ -65,3 +66,8 @@ resilience4j:
         failureRateThreshold: 50
         automaticTransitionFromOpenToHalfOpenEnabled: true
         slidingWindowType: COUNT_BASED
+  retry:
+    instances:
+      retryBreaker:
+        maxAttempts: 5
+        waitDuration: 500ms
