@@ -8,11 +8,14 @@ import com.example.order.model.OrderStatus;
 import com.example.order.model.CartItem;
 import com.example.order.model.Order;
 import com.example.order.model.OrderItem;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,9 @@ public class OrderService {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     public Optional<OrderResponse> createOrder(String userId) {
 
@@ -51,6 +57,10 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
         cartItemService.clearCart(userId);
+
+        rabbitTemplate.convertAndSend("order.exchange", "order.tracking",
+                Map.of("orderId", savedOrder.getId(),
+                        "status", "CREATED"));
 
         return Optional.of(mapToOrderResponse(savedOrder));
     }

@@ -19,7 +19,6 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createProduct(@RequestBody ProductRequest productRequest) {
-        System.out.println(productRequest);
         productService.createProduct(productRequest);
         return new ResponseEntity<>("product created successfully", HttpStatus.CREATED);
     }
@@ -53,7 +52,6 @@ public class ProductController {
 
     @GetMapping("/search")
     public ResponseEntity<List<ProductResponse>> searchProducts(@RequestParam String keyword) {
-        System.out.println(keyword);
         return new ResponseEntity<>(productService.searchProducts(keyword), HttpStatus.OK);
     }
 }
